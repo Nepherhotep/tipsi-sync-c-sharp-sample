@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TipsiSyncCSharpClient.Settings" GeneratedClassName="Address">
+  <Profiles />
+  <Settings>
+    <Setting Name="DomainURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://test.gettipsi.com/</Value>
+    </Setting>
+    <Setting Name="LoginURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">api/rest/v001/login</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
