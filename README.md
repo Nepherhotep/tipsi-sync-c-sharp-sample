@@ -1,4 +1,5 @@
-# tipsi-sync-c-sharp-sample
+# Sync inventory using Tipsi integration API
+
 Sample library to sync with Tipsi
 
 ```cs
