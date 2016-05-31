@@ -33,7 +33,7 @@ TipsiClient tipsiClient = new TipsiClient(baseAddress, apiVersion, login, passwo
 tipsiClient.LoginAsync().Wait();
 Console.WriteLine("Login is successful!!!");
 
-// sync clear will automatically set in_stock param to "0"
+// sync clear will automatically set in_stock param to "0" for unlisted items in the given batch
 syncResult = tipsiClient.SyncClearAsync(storeID, syncData).Result;
 ```
 
