@@ -34,8 +34,4 @@ Console.WriteLine("Login is successful!!!");
 ```
 
 Video:
-
-accepted
-It's not possible to embed videos directly, but you can put an image which links to a youtube video:
-
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/gCw0NtvPm_o/0.jpg)](https://www.youtube.com/watch?v=gCw0NtvPm_o)
