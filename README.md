@@ -11,14 +11,16 @@ List<Dictionary<string, object>> syncData = new List<Dictionary<string, object>>
   {
       new Dictionary<string, object>
           {
-              { "barcode", "bar-525" },
+              { "barcode", "22-0010" },
+              { "barcodes": ["22-0010", "22-0020"] },
               { "bottle_size", 750 },
               { "price", 34.4 },
               { "in_stock", 12 }
           },
       new Dictionary<string, object>
           {
-              { "barcode", "bar-504" },
+              { "barcode", "000-234-000" },
+              { "barcodes": ["000-234-000"] },
               { "bottle_size", 750 },
               { "price", 34.4 },
               { "in_stock", 12 }
