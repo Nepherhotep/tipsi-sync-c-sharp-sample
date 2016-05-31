@@ -47,36 +47,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Data\Abstract\Area.cs" />
-    <Compile Include="Models\Data\Abstract\DescriptionNameID.cs" />
-    <Compile Include="Models\Data\Abstract\NameID.cs" />
-    <Compile Include="Models\Data\BaseInventory.cs" />
-    <Compile Include="Models\Data\Country.cs" />
-    <Compile Include="Models\Data\Designation.cs" />
-    <Compile Include="Models\Data\ProRating.cs" />
-    <Compile Include="Models\Data\Region.cs" />
-    <Compile Include="Models\Data\SubRegion.cs" />
-    <Compile Include="Models\Data\Varietal.cs" />
-    <Compile Include="Models\Data\Vineyard.cs" />
-    <Compile Include="Models\Data\Wine.cs" />
-    <Compile Include="Models\Data\WineInventory.cs" />
-    <Compile Include="Models\Data\Winery.cs" />
+    <Compile Include="Models\SyncResult.cs" />
     <Compile Include="Models\UserCredentials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings\Address.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Address.settings</DependentUpon>
-    </Compile>
     <Compile Include="TipsiClient.cs" />
+    <Compile Include="Utilities\HttpUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Settings\Address.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Address.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
