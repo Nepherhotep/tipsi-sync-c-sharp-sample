@@ -12,6 +12,7 @@ List<Dictionary<string, object>> syncData = new List<Dictionary<string, object>>
   {
       new Dictionary<string, object>
           {
+              // all fields described here https://github.com/Nepherhotep/tipsi-sync-c-sharp-sample/wiki/API-Description#base-inventory-struct
               { "barcode", "22-0010" },  // barcode, which will be used to lookup inventory item
               { "barcodes": ["22-0010", "22-0020"] },  // you can specify alternate barcodes here, will override existing barcodes
               { "bottle_size", 750 },  // bottle size in ml (standard bottle - 750ml)
