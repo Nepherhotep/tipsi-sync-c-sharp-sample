@@ -1,6 +1,6 @@
 # Sync inventory using Tipsi integration API
 
-Sample library to sync with Tipsi
+Usage:
 
 ```cs
 string login = "USERNAME";
