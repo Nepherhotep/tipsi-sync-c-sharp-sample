@@ -32,6 +32,9 @@ List<Dictionary<string, object>> syncData = new List<Dictionary<string, object>>
 TipsiClient tipsiClient = new TipsiClient(baseAddress, apiVersion, login, password);
 tipsiClient.LoginAsync().Wait();
 Console.WriteLine("Login is successful!!!");
+
+// sync clear will automatically set in_stock param to "0"
+syncResult = tipsiClient.SyncClearAsync(storeID, syncData).Result;
 ```
 
 ## Video
