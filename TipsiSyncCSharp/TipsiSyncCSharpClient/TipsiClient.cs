@@ -17,6 +17,7 @@ namespace TipsiSyncCSharpClient
     using System.Threading.Tasks;
 
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     using TipsiSyncCSharpClient.Models;
     using TipsiSyncCSharpClient.Utilities;
@@ -50,6 +51,14 @@ namespace TipsiSyncCSharpClient
         /// {1} - is store id.
         /// </summary>
         private const string SyncClearRoutePattern = "api/rest/{0}/store/{1}/barcode/sync_clear";
+                
+        /// <summary>
+        /// The sync clear route pattern.
+        /// {0} - is version.
+        /// {1} - is store id.
+        /// {2} - is barcode.
+        /// </summary>
+        private const string BarcodeRoutePattern = "api/rest/{0}/store/{1}/barcode/{2}";
 
         /// <summary>
         /// The version.
@@ -135,6 +144,27 @@ namespace TipsiSyncCSharpClient
 
             string responceContent = await CheckResopnse(response);
             return JsonConvert.DeserializeObject<SyncResult>(responceContent);
+        }
+
+        /// <summary>
+        /// Gets the barcode matches async.
+        /// </summary>
+        /// <param name="storeId">The store id.</param>
+        /// <param name="barcode">The barcode.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The <see cref="Task"/>.</returns>
+        public async Task<JObject> BarcodeMatchAsync(string storeId, string barcode, Dictionary<string, string> parameters)
+        {
+            string requestUri = parameters != null && parameters.Count > 0
+                ? string.Format(
+                    "{0}?{1}",
+                    string.Format(BarcodeRoutePattern, _version, storeId, barcode),
+                    parameters.ToGetParameters())
+                : string.Format(BarcodeRoutePattern, _version, storeId, barcode);
+
+            HttpResponseMessage response = await _httpClient.GetAsync(requestUri);
+            string responceContent = await CheckResopnse(response);
+            return JsonConvert.DeserializeObject(responceContent) as JObject;
         }
 
         /// <summary>

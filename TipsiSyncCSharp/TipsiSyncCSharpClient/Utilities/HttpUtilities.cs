@@ -9,6 +9,7 @@
 
 namespace TipsiSyncCSharpClient.Utilities
 {
+    using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading.Tasks;
 
@@ -35,6 +36,27 @@ namespace TipsiSyncCSharpClient.Utilities
                                              };
 
             return await client.SendAsync(request);
+        }
+
+        /// <summary>
+        /// Converts given dictionary to string of parameters for GET methos.
+        /// </summary>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <returns>The parameters string.</returns>
+        public static string ToGetParameters(this Dictionary<string, string> dictionary)
+        {
+            string getParametersString = string.Empty;
+            foreach (KeyValuePair<string, string> keyValuePair in dictionary)
+            {
+                getParametersString = string.Concat(
+                    getParametersString,
+                    getParametersString == string.Empty ? string.Empty : "&",
+                    keyValuePair.Key,
+                    "=",
+                    keyValuePair.Value);
+            }
+
+            return getParametersString;
         }
     }
 }

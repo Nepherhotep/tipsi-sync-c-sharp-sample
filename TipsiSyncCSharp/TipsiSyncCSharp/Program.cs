@@ -12,6 +12,8 @@ namespace TipsiSyncCSharp
     using System;
     using System.Collections.Generic;
 
+    using Newtonsoft.Json.Linq;
+
     using TipsiSyncCSharpClient;
     using TipsiSyncCSharpClient.Models;
 
@@ -30,6 +32,7 @@ namespace TipsiSyncCSharp
             string login = "USERNAME";
             string password = "PASSWORD";
             string apiVersion = "v001";
+            string barcode = "BARCODE";
             string storeID = "STORE_ID";
             string baseAddress = "https://test.gettipsi.com";
             List<Dictionary<string, object>> syncData = new List<Dictionary<string, object>>
@@ -61,6 +64,19 @@ namespace TipsiSyncCSharp
             // or
             syncResult = tipsiClient.SyncClearAsync(storeID, syncData).Result;
             PrintSyncResult(syncResult);
+
+            // Get Product By Barcode
+            JObject jObject =
+                tipsiClient.BarcodeMatchAsync(
+                    storeID,
+                    barcode,
+                    new Dictionary<string, string>
+                        {
+                            { "wine_fields", "id,winery,region" },
+                            { "inventory_fields", "id,wine" },
+                            { "winery_fields", "id,name" },
+                            { "region_fields", "id,name,description,image_url" }
+                        }).Result;
         }
 
         /// <summary>
