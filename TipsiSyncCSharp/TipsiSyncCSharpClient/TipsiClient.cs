@@ -11,12 +11,14 @@ namespace TipsiSyncCSharpClient
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Text;
     using System.Threading.Tasks;
 
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     using TipsiSyncCSharpClient.Models;
     using TipsiSyncCSharpClient.Utilities;
@@ -52,6 +54,29 @@ namespace TipsiSyncCSharpClient
         private const string SyncClearRoutePattern = "api/rest/{0}/store/{1}/barcode/sync_clear";
 
         /// <summary>
+        /// The food IDs route pattern.
+        /// {0} - is version.
+        /// </summary>
+        private const string FoodIdsRoutePattern = "api/rest/{0}/food";
+
+        /// <summary>
+        /// The food scoring struct route pattern.
+        /// {0} - is version.
+        /// {1} - is store id.
+        /// </summary>
+        private const string WineRoutePattern = "api/rest/{0}/store/{1}/wine";
+
+        /// <summary>
+        /// The food_fields constant.
+        /// </summary>
+        public const string FoodFields = "food_fields";
+
+        /// <summary>
+        /// The ID key.
+        /// </summary>
+        public const string IdKey = "id";
+
+        /// <summary>
         /// The version.
         /// </summary>
         private readonly string _version;
@@ -72,6 +97,11 @@ namespace TipsiSyncCSharpClient
         private readonly UserCredentials _userCredentials;
 
         /// <summary>
+        /// The cached food data.
+        /// </summary>
+        private Dictionary<long, Dictionary<string, object>> _foodDictionary;
+
+        /// <summary>
         /// Checks resopnse for errors.
         /// </summary>
         /// <param name="response">The response.</param>
@@ -90,6 +120,37 @@ namespace TipsiSyncCSharpClient
             }
 
             return responceContent;
+        }
+
+        private string BuildGetParametersString(Dictionary<string, string> parameters)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (var parameter in parameters)
+            {
+                stringBuilder.Append("&" + parameter.Key + "=" + parameter.Value);
+            }
+
+            stringBuilder[0] = '?';
+            return stringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Fetchs food ids.
+        /// </summary>
+        /// <returns></returns>
+        private async Task FetchFoodIdsAsync()
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync(
+                string.Format(FoodIdsRoutePattern, _version) +
+                "?food_fields=id,meal,preparation,image_url,image_selected_url");
+
+            string responceContent = await CheckResopnse(response);
+            FoodIdsResponceModel foodIdsResponceModel = JsonConvert.DeserializeObject<FoodIdsResponceModel>(responceContent);
+            _foodDictionary = new Dictionary<long, Dictionary<string, object>>();
+            foreach (Dictionary<string, object> result in foodIdsResponceModel.Results)
+            {
+                _foodDictionary.Add((long)result[IdKey], result);
+            }
         }
 
         /// <summary>
@@ -135,6 +196,64 @@ namespace TipsiSyncCSharpClient
 
             string responceContent = await CheckResopnse(response);
             return JsonConvert.DeserializeObject<SyncResult>(responceContent);
+        }
+
+        public async Task<object> BarcodeMatchAsync(string storeID, Dictionary<string, string> parameters)
+        {
+            string foodFieldsParameter;
+            if (parameters.TryGetValue(FoodFields, out foodFieldsParameter))
+            {
+                if (_foodDictionary == null)
+                {
+                    await FetchFoodIdsAsync();
+                }
+
+                if (!foodFieldsParameter.Contains(IdKey))
+                {
+                    parameters[FoodFields] = IdKey + "," + foodFieldsParameter;
+                }
+            }
+
+            string parametersString = BuildGetParametersString(parameters);
+            HttpResponseMessage response = await _httpClient.GetAsync(string.Format(WineRoutePattern, _version, storeID) + parametersString);
+            string responceContent = await CheckResopnse(response);
+            JObject jObject = JObject.Parse(responceContent);
+            if (foodFieldsParameter != null)
+            {
+                JToken resultsToken = jObject["results"];
+                if (resultsToken != null)
+                {
+                    int resultsCount = resultsToken.Count();
+                    for (int i = 0; i < resultsCount; i++)
+                    {
+                        JToken jToken = resultsToken[i];
+                        if (jToken != null)
+                        {
+                            jToken = jToken["wine"];
+                            if (jToken != null)
+                            {
+                                jToken = jToken["food_scoring"];
+                                int scoresCount = jToken.Count();
+                                for (int j = 0; j < scoresCount; j++)
+                                {
+                                    long id = jToken[j]["id"].Value<long>();
+                                    Dictionary<string, object> foodData = _foodDictionary[id];
+                                    foreach (var keyValue in foodData)
+                                    {
+                                        // Add requested fields.
+                                        if (foodFieldsParameter.Contains(keyValue.Key))
+                                        {
+                                            jToken[j][keyValue.Key] = new JValue(keyValue.Value);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return jObject;
         }
 
         /// <summary>

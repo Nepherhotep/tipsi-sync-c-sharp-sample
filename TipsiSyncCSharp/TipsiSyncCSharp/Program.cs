@@ -27,10 +27,10 @@ namespace TipsiSyncCSharp
         static void Main(string[] args)
         {
             // Prepare data
-            string login = "bottles-cases-api";
-            string password = "3bYtXvmTBZXX";
+            string login = "";
+            string password = "";
             string apiVersion = "v001";
-            string storeID = "19351";
+            string storeID = "";
             string baseAddress = "https://test.gettipsi.com";
             List<Dictionary<string, object>> syncData = new List<Dictionary<string, object>>
                                                             {
@@ -61,6 +61,16 @@ namespace TipsiSyncCSharp
             // or
             syncResult = tipsiClient.SyncClearAsync(storeID, syncData).Result;
             PrintSyncResult(syncResult);
+
+            Dictionary<string, string> parameters = new Dictionary<string, string>
+            {
+                {"inventory_fields", "id,wine"},
+                {"wine_fields", "id,food_scoring"},
+                {"food_fields", "meal,preparation,image_selected_url,image_url"},
+                {"page_size", "3"}
+            };
+
+            object jObject = tipsiClient.BarcodeMatchAsync(storeID, parameters).Result;
         }
 
         /// <summary>
