@@ -33,12 +33,50 @@ Same, as [Sync Inventory Endpoint](#sync-inventory), except will clear inventory
 https://DOMAIN.gettipsi.com/api/rest/v001/store/STORE ID/wine?wine_fields=id,winery,region&inventory_fields=id,wine&winery_fields=id,name&region_fields=id,name,description,image_url
 ```
 
-
 ## List Drink Inventory
 | URL | https://DOMAIN/api/rest/v001/store/STORE ID/drink |
 | --- | --- |
 | Method | GET |
 | GET Params | List of fields for each struct [inventory structs](#base-inventory-struct), similar to wine list. |
+
+
+## Create Wine Inventory
+| URL | https://DOMAIN/api/rest/v001/store/STORE ID/wine |
+| --- | --- |
+| Method | POST |
+| POST Params | JSON without nested fields [inventory structs](#base-inventory-struct).|
+
+Minimal parameters for wine: `barcoded`, `external_id`, `wine_id`
+
+```javascript
+// POST /api/rest/v001/store/38/wine
+// Data: {"external_id": 3001, "barcodes": ["wine-123"], "wine_id": 311}
+// Response code: 201
+({
+     "abv": null,
+     "barcodes": [
+         "wine-123"
+     ],
+     "external_id": 3001,
+     "id": 421,
+     "in_stock": null,
+     "price": null,
+     "proof": null,
+     "special_price": null,
+     "special_price_amount": 0,
+     "special_price_on": false,
+     "status": "match_complete",
+     "unit_size": null
+ })
+```
+
+## Create Drink Inventory
+| URL | https://DOMAIN/api/rest/v001/store/STORE ID/drink |
+| --- | --- |
+| Method | POST |
+| POST Params | JSON without nested fields [inventory structs](#base-inventory-struct), similar to wine list. |
+
+Minimal parameters for wine: `barcoded`, `external_id`, `drink_id`
 
 
 ## List Food
@@ -75,7 +113,7 @@ https://DOMAIN.gettipsi.com/api/rest/v001/store/STORE ID/barcode/BARCODE?wine_fi
 ### Example
 
 ```javascript
-// GET /api/rest/v001/fts/?query=caymus&winery_fields=id%2Cname&pro_rating_fields=shortcut%2Crating&wine_fields=id%2Cpro_rating%2Cwinery Data: {"query": "caymus", "winery_fields": "id,name", "pro_rating_fields": "shortcut,rating", "wine_fields": "id,pro_rating,winery"} 
+// GET /api/rest/v001/fts/?query=caymus&winery_fields=id%2Cname&pro_rating_fields=shortcut%2Crating&wine_fields=id%2Cpro_rating%2Cwinery Data: {"query": "caymus", "winery_fields": "id,name", "pro_rating_fields": "shortcut,rating", "wine_fields": "id,pro_rating,winery"}
 
 // Response code: 200
 
@@ -106,12 +144,12 @@ https://DOMAIN.gettipsi.com/api/rest/v001/store/STORE ID/barcode/BARCODE?wine_fi
 | --- | --- |
 | id | Inventory id, int |
 | price | Item price, float |
-| special_price | Special price, float | 
+| special_price | Special price, float |
 | special_price_on | Special price enabled/disable, bool |
 | special_price_amount | Amount of items required to purchase to get special price, int |
 | barcodes | List of barcodes (list of strings) - each barcode has to be unique per retail store, otherwise backend will report validation error |
-| proof | Alcohol proof, float | 
-| abv | Alcohol by value, float | 
+| proof | Alcohol proof, float |
+| abv | Alcohol by value, float |
 | bottle_size | Bottle size in ml, int |
 | in_stock | Amount of items in stock (regular price), int |
 | updated | Last inventory update date and time |
