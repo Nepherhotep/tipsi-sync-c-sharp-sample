@@ -1,5 +1,7 @@
 # Sync inventory using Tipsi integration API
 
+[API documentation](https://github.com/Nepherhotep/tipsi-sync-c-sharp-sample/blob/master/api.md)
+
 ## Sample Code
 
 ```cs
