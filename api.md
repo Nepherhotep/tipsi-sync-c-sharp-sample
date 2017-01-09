@@ -108,13 +108,69 @@ https://DOMAIN.gettipsi.com/api/rest/v001/store/STORE ID/barcode/BARCODE?wine_fi
 | URL | https://DOMAIN/api/rest/v001/fts/ |
 | --- | --- |
 | Method | GET |
-| GET Params | query - search query, wines_only, drinks_only - filter drinks or wines, [fts struct fields](#fts-struct) |
+| GET Params | query - search query, [fts struct fields](#fts-struct) |
 
 ### Example
 
 ```javascript
-// GET /api/rest/v001/fts/?query=caymus&winery_fields=id%2Cname&pro_rating_fields=shortcut%2Crating&wine_fields=id%2Cpro_rating%2Cwinery Data: {"query": "caymus", "winery_fields": "id,name", "pro_rating_fields": "shortcut,rating", "wine_fields": "id,pro_rating,winery"}
+// Search drinks and wines
+// GET /api/rest/v001/fts/?pro_rating_fields=shortcut%2Crating&amp;wine_fields=id%2Cpro_rating%2Cwinery&amp;fts_fields=rank%2Cwine%2Cdrink&amp;query=validated&amp;winery_fields=id%2Cname
+// Data: {"pro_rating_fields": "shortcut,rating", "wine_fields": "id,pro_rating,winery", "fts_fields": "rank,wine,drink", "query": "validated", "winery_fields": "id,name"}
+// Response code: 200
+({
+     "count": 2,
+     "next": null,
+     "previous": null,
+     "results": [
+         {
+             "drink": null,
+             "rank": "0.638323",
+             "wine": {
+                 "id": 19,
+                 "pro_rating": [],
+                 "winery": {
+                     "id": 18,
+                     "name": "Caymus"
+                 }
+             }
+         },
+         {
+             "drink": {
+                 "id": 20
+             },
+             "rank": "0.0607927",
+             "wine": null
+         }
+     ]
+ }
 
+// Only wines
+// /api/rest/v001/fts/?pro_rating_fields=shortcut%2Crating&amp;wine_fields=id%2Cpro_rating%2Cwinery&amp;query=validated&amp;fts_fields=rank%2Cwine&amp;winery_fields=id%2Cname
+// Data: {"pro_rating_fields": "shortcut,rating", "wine_fields": "id,pro_rating,winery", "query": "validated", "fts_fields": "rank,wine", "winery_fields": "id,name"}
+// Response code: 200
+
+ {
+     "count": 1,
+     "next": null,
+     "previous": null,
+     "results": [
+         {
+             "rank": "0.638323",
+             "wine": {
+                 "id": 19,
+                 "pro_rating": [],
+                 "winery": {
+                     "id": 18,
+                     "name": "Caymus"
+                 }
+             }
+         }
+     ]
+ }
+
+// Only drinks
+// /api/rest/v001/fts/?pro_rating_fields=shortcut%2Crating&amp;wine_fields=id%2Cpro_rating%2Cwinery&amp;query=validated&amp;fts_fields=rank%2Cdrink&amp;winery_fields=id%2Cname
+// Data: {"pro_rating_fields": "shortcut,rating", "wine_fields": "id,pro_rating,winery", "query": "validated", "fts_fields": "rank,drink", "winery_fields": "id,name"}
 // Response code: 200
 
 ({
@@ -123,19 +179,13 @@ https://DOMAIN.gettipsi.com/api/rest/v001/store/STORE ID/barcode/BARCODE?wine_fi
      "previous": null,
      "results": [
          {
-             "drink": null,
-             "id": 7200,
-             "rank": "0.0",
-             "wine": {
-                 "id": 6242,
-                 "pro_rating": [],
-                 "winery": {
-                     "id": 1243,
-                     "name": "Caymus"
-                 }
-             }
+             "drink": {
+                 "id": 20
+             },
+             "rank": "0.0607927"
          }
      ]
+ }
 ```
 
 # Structs
