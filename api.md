@@ -46,7 +46,7 @@ https://DOMAIN.gettipsi.com/api/rest/v001/store/STORE ID/wine?wine_fields=id,win
 | Method | POST |
 | POST Params | JSON without nested fields [inventory structs](#base-inventory-struct).|
 
-Minimal parameters for wine: `barcoded`, `external_id`, `wine_id`
+Minimal parameters for wine: `barcodes`, `external_id`, `wine_id`
 
 ```javascript
 // POST /api/rest/v001/store/38/wine
@@ -76,7 +76,7 @@ Minimal parameters for wine: `barcoded`, `external_id`, `wine_id`
 | Method | POST |
 | POST Params | JSON without nested fields [inventory structs](#base-inventory-struct), similar to wine list. |
 
-Minimal parameters for wine: `barcoded`, `external_id`, `drink_id`
+Minimal parameters for wine: `barcodes`, `external_id`, `drink_id`
 
 
 ## List Food
