@@ -114,8 +114,8 @@ https://DOMAIN.gettipsi.com/api/rest/v001/store/STORE ID/barcode/BARCODE?wine_fi
 
 ```javascript
 // Search drinks and wines
-// GET /api/rest/v001/fts/?pro_rating_fields=shortcut%2Crating&amp;wine_fields=id%2Cpro_rating%2Cwinery&amp;fts_fields=rank%2Cwine%2Cdrink&amp;query=validated&amp;winery_fields=id%2Cname
-// Data: {"pro_rating_fields": "shortcut,rating", "wine_fields": "id,pro_rating,winery", "fts_fields": "rank,wine,drink", "query": "validated", "winery_fields": "id,name"}
+// GET /api/rest/v001/fts/?pro_rating_fields=shortcut%2Crating&amp;wine_fields=id%2Cpro_rating%2Cwinery&amp;fts_fields=rank%2Cwine%2Cdrink&amp;query=caymus&amp;winery_fields=id%2Cname
+// Data: {"pro_rating_fields": "shortcut,rating", "wine_fields": "id,pro_rating,winery", "fts_fields": "rank,wine,drink", "query": "caymus", "winery_fields": "id,name"}
 // Response code: 200
 ({
      "count": 2,
@@ -145,8 +145,8 @@ https://DOMAIN.gettipsi.com/api/rest/v001/store/STORE ID/barcode/BARCODE?wine_fi
  }
 
 // Only wines
-// /api/rest/v001/fts/?pro_rating_fields=shortcut%2Crating&amp;wine_fields=id%2Cpro_rating%2Cwinery&amp;query=validated&amp;fts_fields=rank%2Cwine&amp;winery_fields=id%2Cname
-// Data: {"pro_rating_fields": "shortcut,rating", "wine_fields": "id,pro_rating,winery", "query": "validated", "fts_fields": "rank,wine", "winery_fields": "id,name"}
+// /api/rest/v001/fts/?pro_rating_fields=shortcut%2Crating&amp;wine_fields=id%2Cpro_rating%2Cwinery&amp;query=caymus&amp;fts_fields=rank%2Cwine&amp;winery_fields=id%2Cname
+// Data: {"pro_rating_fields": "shortcut,rating", "wine_fields": "id,pro_rating,winery", "query": "caymus", "fts_fields": "rank,wine", "winery_fields": "id,name"}
 // Response code: 200
 
  {
@@ -169,8 +169,8 @@ https://DOMAIN.gettipsi.com/api/rest/v001/store/STORE ID/barcode/BARCODE?wine_fi
  }
 
 // Only drinks
-// /api/rest/v001/fts/?pro_rating_fields=shortcut%2Crating&amp;wine_fields=id%2Cpro_rating%2Cwinery&amp;query=validated&amp;fts_fields=rank%2Cdrink&amp;winery_fields=id%2Cname
-// Data: {"pro_rating_fields": "shortcut,rating", "wine_fields": "id,pro_rating,winery", "query": "validated", "fts_fields": "rank,drink", "winery_fields": "id,name"}
+// /api/rest/v001/fts/?pro_rating_fields=shortcut%2Crating&amp;wine_fields=id%2Cpro_rating%2Cwinery&amp;query=wiskey&amp;fts_fields=rank%2Cdrink&amp;winery_fields=id%2Cname
+// Data: {"pro_rating_fields": "shortcut,rating", "wine_fields": "id,pro_rating,winery", "query": "wiskey", "fts_fields": "rank,drink", "winery_fields": "id,name"}
 // Response code: 200
 
 ({
