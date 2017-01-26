@@ -169,8 +169,8 @@ https://DOMAIN.gettipsi.com/api/rest/v001/store/STORE ID/barcode/BARCODE?wine_fi
  }
 
 // Only drinks
-// /api/rest/v001/fts/?pro_rating_fields=shortcut%2Crating&amp;wine_fields=id%2Cpro_rating%2Cwinery&amp;query=wiskey&amp;fts_fields=rank%2Cdrink&amp;winery_fields=id%2Cname
-// Data: {"pro_rating_fields": "shortcut,rating", "wine_fields": "id,pro_rating,winery", "query": "wiskey", "fts_fields": "rank,drink", "winery_fields": "id,name"}
+// /api/rest/v001/fts/?pro_rating_fields=shortcut%2Crating&amp;wine_fields=id%2Cpro_rating%2Cwinery&amp;query=whiskey&amp;fts_fields=rank%2Cdrink&amp;winery_fields=id%2Cname
+// Data: {"pro_rating_fields": "shortcut,rating", "wine_fields": "id,pro_rating,winery", "query": "whiskey", "fts_fields": "rank,drink", "winery_fields": "id,name"}
 // Response code: 200
 
 ({
