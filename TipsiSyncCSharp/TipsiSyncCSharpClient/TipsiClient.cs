@@ -43,22 +43,22 @@ namespace TipsiSyncCSharpClient
         /// {0} - is version.
         /// {1} - is store id.
         /// </summary>
-        private const string SyncRoutePattern = "/api/rest/{0}/store/{1}/barcode/sync";
+        private const string SyncRoutePattern = "/api/rest/{0}/store/{1}/ext/sync";
         
         /// <summary>
         /// The sync clear route pattern.
         /// {0} - is version.
         /// {1} - is store id.
         /// </summary>
-        private const string SyncClearRoutePattern = "api/rest/{0}/store/{1}/barcode/sync_clear";
+        private const string SyncClearRoutePattern = "api/rest/{0}/store/{1}/ext/sync_clear";
                 
         /// <summary>
-        /// The sync clear route pattern.
+        /// The barcode route pattern.
         /// {0} - is version.
         /// {1} - is store id.
-        /// {2} - is barcode.
+        /// {2} - is external_id.
         /// </summary>
-        private const string BarcodeRoutePattern = "api/rest/{0}/store/{1}/barcode/{2}";
+        private const string BarcodeRoutePattern = "api/rest/{0}/store/{1}/ext/{2}";
 
         /// <summary>
         /// The version.
@@ -147,20 +147,20 @@ namespace TipsiSyncCSharpClient
         }
 
         /// <summary>
-        /// Gets the barcode matches async.
+        /// Gets the external_id matches async.
         /// </summary>
         /// <param name="storeId">The store id.</param>
-        /// <param name="barcode">The barcode.</param>
+        /// <param name="externalId">The external ID.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The <see cref="Task"/>.</returns>
-        public async Task<JObject> BarcodeMatchAsync(string storeId, string barcode, Dictionary<string, string> parameters)
+        public async Task<JObject> BarcodeMatchAsync(string storeId, string externalId, Dictionary<string, string> parameters)
         {
             string requestUri = parameters != null && parameters.Count > 0
                 ? string.Format(
                     "{0}?{1}",
-                    string.Format(BarcodeRoutePattern, _version, storeId, barcode),
+                    string.Format(BarcodeRoutePattern, _version, storeId, externalId),
                     parameters.ToGetParameters())
-                : string.Format(BarcodeRoutePattern, _version, storeId, barcode);
+                : string.Format(BarcodeRoutePattern, _version, storeId, externalId);
 
             HttpResponseMessage response = await _httpClient.GetAsync(requestUri);
             string responceContent = await CheckResopnse(response);

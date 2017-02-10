@@ -29,24 +29,25 @@ namespace TipsiSyncCSharp
         static void Main(string[] args)
         {
             // Prepare data
-            string login = "USERNAME";
+            string login = "YOUR_USERNAME";
             string password = "PASSWORD";
             string apiVersion = "v001";
-            string barcode = "BARCODE";
+            string externalId = "EXTERNAL_ID";
             string storeID = "STORE_ID";
-            string baseAddress = "https://test.gettipsi.com";
+            string baseAddress = "https://integration-test.gettipsi.com";
+
             List<Dictionary<string, object>> syncData = new List<Dictionary<string, object>>
                                                             {
                                                                 new Dictionary<string, object>
                                                                     {
-                                                                        { "barcode", "bar-525" },
+                                                                        { "external_id", "bar-525" },
                                                                         { "bottle_size", 750 },
                                                                         { "price", 34.4 },
                                                                         { "in_stock", 12 }
                                                                     },
                                                                 new Dictionary<string, object>
                                                                     {
-                                                                        { "barcode", "bar-504" },
+                                                                        { "external_id", "bar-504" },
                                                                         { "bottle_size", 750 },
                                                                         { "price", 34.4 },
                                                                         { "in_stock", 12 }
@@ -69,7 +70,7 @@ namespace TipsiSyncCSharp
             JObject jObject =
                 tipsiClient.BarcodeMatchAsync(
                     storeID,
-                    barcode,
+                    externalId,
                     new Dictionary<string, string>
                         {
                             { "wine_fields", "id,winery,region" },
