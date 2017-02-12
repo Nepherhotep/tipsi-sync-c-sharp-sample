@@ -11,6 +11,7 @@ namespace TipsiSyncCSharpClient
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Text;
@@ -27,6 +28,11 @@ namespace TipsiSyncCSharpClient
     /// </summary>
     public class TipsiClient
     {
+        /// <summary>
+        /// The external_id constant.
+        /// </summary>
+        public const string ExternalId = "external_id";
+
         /// <summary>
         /// The application/json media type.
         /// </summary>
@@ -81,6 +87,21 @@ namespace TipsiSyncCSharpClient
         private readonly UserCredentials _userCredentials;
 
         /// <summary>
+        /// Checks sync data.
+        /// </summary>
+        /// <param name="syncData">The sync data.</param>
+        private void CheckSyncData(List<Dictionary<string, object>> syncData)
+        {
+            foreach (Dictionary<string, object> dictionary in syncData)
+            {
+                if (!dictionary.Keys.Contains(ExternalId))
+                {
+                    throw new ArgumentException("Each syncData dictionary must contain 'external_id' key. Please add '{external_id: EXTERNAL_ID_VALUE}' key-value pair to the each dictionary in the list.");
+                }
+            }
+        }
+
+        /// <summary>
         /// Checks resopnse for errors.
         /// </summary>
         /// <param name="response">The response.</param>
@@ -122,6 +143,8 @@ namespace TipsiSyncCSharpClient
         /// <returns>The <see cref="Task"/>.</returns>
         public async Task<SyncResult> SyncAsync(string storeId, List<Dictionary<string, object>> syncData)
         {
+            CheckSyncData(syncData);
+
             HttpResponseMessage response = await _httpClient.PatchAsync(
                     string.Format(SyncRoutePattern, _version, storeId),
                     new StringContent(JsonConvert.SerializeObject(syncData), Encoding.UTF8, ApplicationJSONMediaType));
@@ -138,6 +161,8 @@ namespace TipsiSyncCSharpClient
         /// <returns>The <see cref="Task"/>.</returns>
         public async Task<SyncResult> SyncClearAsync(string storeId, List<Dictionary<string, object>> syncData)
         {
+            CheckSyncData(syncData);
+
             HttpResponseMessage response = await _httpClient.PatchAsync(
                     string.Format(SyncClearRoutePattern, _version, storeId),
                     new StringContent(JsonConvert.SerializeObject(syncData), Encoding.UTF8, ApplicationJSONMediaType));

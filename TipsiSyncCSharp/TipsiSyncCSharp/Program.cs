@@ -40,7 +40,7 @@ namespace TipsiSyncCSharp
                                                             {
                                                                 new Dictionary<string, object>
                                                                     {
-                                                                        { "external_id", 229445 },
+                                                                        { TipsiClient.ExternalId, 229445 },
                                                                         { "bottle_size", 750 },
                                                                         { "price", 34.4 },
                                                                         { "in_stock", 12 },
@@ -48,7 +48,7 @@ namespace TipsiSyncCSharp
                                                                     },
                                                                 new Dictionary<string, object>
                                                                     {
-                                                                        { "external_id", 227985 },
+                                                                        { TipsiClient.ExternalId, 227985 },
                                                                         { "bottle_size", 750 },
                                                                         { "price", 34.4 },
                                                                         { "in_stock", 12 },
