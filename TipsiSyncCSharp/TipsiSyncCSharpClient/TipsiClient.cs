@@ -61,6 +61,16 @@ namespace TipsiSyncCSharpClient
         private const string BarcodeRoutePattern = "api/rest/{0}/store/{1}/barcode/{2}";
 
         /// <summary>
+        /// The count of items per chunk.
+        /// </summary>
+        private const int ChunkSize = 300;
+
+        /// <summary>
+        /// The timeout in seconds.
+        /// </summary>
+        private const int TimeOut = 300;
+
+        /// <summary>
         /// The version.
         /// </summary>
         private readonly string _version;
@@ -102,6 +112,38 @@ namespace TipsiSyncCSharpClient
         }
 
         /// <summary>
+        /// Clears all items in the given store.
+        /// </summary>
+        /// <param name="storeId">The store ID.</param>
+        /// <returns>The result of operation.</returns>
+        private async Task<SyncResult> ClearAsync(string storeId)
+        {
+            HttpResponseMessage response = await _httpClient.PatchAsync(
+                string.Format(SyncClearRoutePattern, _version, storeId),
+                new StringContent(JsonConvert.SerializeObject(new List<Dictionary<string, object>>()), Encoding.UTF8,
+                    ApplicationJSONMediaType));
+
+            string responceContent = await CheckResopnse(response);
+            return JsonConvert.DeserializeObject<SyncResult>(responceContent);
+        }
+
+        /// <summary>
+        /// Synchronizes the chunk of data asynchronously.
+        /// </summary>
+        /// <param name="storeId">The store ID.</param>
+        /// <param name="syncData">The wine Inventory For Syncs.</param>
+        /// <returns>The <see cref="Task"/>.</returns>
+        private async Task<SyncResult> SyncChunckAsync(string storeId, List<Dictionary<string, object>> syncData)
+        {
+            HttpResponseMessage response = await _httpClient.PatchAsync(
+                string.Format(SyncRoutePattern, _version, storeId),
+                new StringContent(JsonConvert.SerializeObject(syncData), Encoding.UTF8, ApplicationJSONMediaType));
+
+            string responceContent = await CheckResopnse(response);
+            return JsonConvert.DeserializeObject<SyncResult>(responceContent);
+        }
+
+        /// <summary>
         /// Logins at the service.
         /// </summary>
         /// <returns>The <see cref="Task"/>.</returns>
@@ -122,12 +164,27 @@ namespace TipsiSyncCSharpClient
         /// <returns>The <see cref="Task"/>.</returns>
         public async Task<SyncResult> SyncAsync(string storeId, List<Dictionary<string, object>> syncData)
         {
-            HttpResponseMessage response = await _httpClient.PatchAsync(
-                    string.Format(SyncRoutePattern, _version, storeId),
-                    new StringContent(JsonConvert.SerializeObject(syncData), Encoding.UTF8, ApplicationJSONMediaType));
+            List<Dictionary<string, object>> chuckData = new List<Dictionary<string, object>>();
+            SyncResult syncResult = new SyncResult();
 
-            string responceContent = await CheckResopnse(response);
-            return JsonConvert.DeserializeObject<SyncResult>(responceContent);
+            for (int i = 0; i < syncData.Count; i++)
+            {
+                chuckData.Add(syncData[i]);
+                if (i % ChunkSize == 0)
+                {
+                    SyncResult chunkSyncResult = await SyncChunckAsync(storeId, chuckData);
+                    syncResult += chunkSyncResult;
+                    chuckData.Clear();
+                }
+            }
+
+            if (chuckData.Count > 0)
+            {
+                SyncResult chunkSyncResult = await SyncChunckAsync(storeId, chuckData);
+                syncResult += chunkSyncResult;
+            }
+
+            return syncResult;
         }
 
         /// <summary>
@@ -138,12 +195,9 @@ namespace TipsiSyncCSharpClient
         /// <returns>The <see cref="Task"/>.</returns>
         public async Task<SyncResult> SyncClearAsync(string storeId, List<Dictionary<string, object>> syncData)
         {
-            HttpResponseMessage response = await _httpClient.PatchAsync(
-                    string.Format(SyncClearRoutePattern, _version, storeId),
-                    new StringContent(JsonConvert.SerializeObject(syncData), Encoding.UTF8, ApplicationJSONMediaType));
-
-            string responceContent = await CheckResopnse(response);
-            return JsonConvert.DeserializeObject<SyncResult>(responceContent);
+            SyncResult syncResult = await ClearAsync(storeId);
+            syncResult += await SyncAsync(storeId, syncData);
+            return syncResult;
         }
 
         /// <summary>
@@ -181,6 +235,7 @@ namespace TipsiSyncCSharpClient
 
             // Create and configure standart http client.
             _httpClient = new HttpClient { BaseAddress = new Uri(baseAddress.TrimEnd('/')) };
+            _httpClient.Timeout = new TimeSpan(0, 0, 0, TimeOut);
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ApplicationJSONMediaType));
 

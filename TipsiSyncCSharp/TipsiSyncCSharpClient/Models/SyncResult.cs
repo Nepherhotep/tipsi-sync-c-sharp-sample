@@ -33,5 +33,31 @@ namespace TipsiSyncCSharpClient.Models
         /// </summary>
         [JsonProperty("updated_items")]
         public int? UpdatedItemsCount { get; set; }
+
+        /// <summary>
+        /// The overraided '+' operator.
+        /// </summary>
+        /// <param name="first">The first object.</param>
+        /// <param name="second">The second object</param>
+        /// <returns></returns>
+        public static SyncResult operator +(SyncResult first, SyncResult second)
+        {
+            return new SyncResult
+            {
+                ClearedItemsCount = first.ClearedItemsCount + second.ClearedItemsCount,
+                CreatedItemsCount = first.CreatedItemsCount + second.CreatedItemsCount,
+                UpdatedItemsCount = first.UpdatedItemsCount + second.UpdatedItemsCount
+            };
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SyncResult"/> class.
+        /// </summary>
+        public SyncResult()
+        {
+            ClearedItemsCount = 0;
+            CreatedItemsCount = 0;
+            UpdatedItemsCount = 0;
+        }
     }
 }
