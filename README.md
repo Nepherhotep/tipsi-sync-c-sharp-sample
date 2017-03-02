@@ -15,7 +15,7 @@ List<Dictionary<string, object>> syncData = new List<Dictionary<string, object>>
       new Dictionary<string, object>
           {
               // all fields described here https://github.com/Nepherhotep/tipsi-sync-c-sharp-sample/wiki/API-Description#base-inventory-struct
-              { "external_id", 220010 },  // external_id, which will be used to lookup inventory item
+              { TipsiClient.ExternalId, 220010 },  // external_id, which will be used to lookup inventory item
               { "barcodes": ["22-0010", "22-0020"] },  // you can specify alternate barcodes here, will override existing barcodes
               { "unit_size", "750ml" },  // bottle size in ml (standard bottle - 750ml)
               { "price", 34.4 },  // bottle price
@@ -23,7 +23,7 @@ List<Dictionary<string, object>> syncData = new List<Dictionary<string, object>>
           },
       new Dictionary<string, object>
           {
-              { "external_id", 234000 },
+              { TipsiClient.ExternalId, 234000 },
               { "barcodes": ["000-234-000"] },
               { "unit_size", "750ml" },
               { "price", 34.4 },

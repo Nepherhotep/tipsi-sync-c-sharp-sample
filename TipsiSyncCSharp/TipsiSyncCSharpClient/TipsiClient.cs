@@ -185,23 +185,23 @@ namespace TipsiSyncCSharpClient
         /// <returns>The <see cref="Task"/>.</returns>
         public async Task<SyncResult> SyncAsync(string storeId, List<Dictionary<string, object>> syncData)
         {
-            List<Dictionary<string, object>> chuckData = new List<Dictionary<string, object>>();
+            List<Dictionary<string, object>> chunckData = new List<Dictionary<string, object>>();
             SyncResult syncResult = new SyncResult();
 
             for (int i = 0; i < syncData.Count; i++)
             {
-                chuckData.Add(syncData[i]);
+                chunckData.Add(syncData[i]);
                 if (i % ChunkSize == 0)
                 {
-                    SyncResult chunkSyncResult = await SyncChunckAsync(storeId, chuckData);
+                    SyncResult chunkSyncResult = await SyncChunckAsync(storeId, chunckData);
                     syncResult += chunkSyncResult;
-                    chuckData.Clear();
+                    chunckData.Clear();
                 }
             }
 
-            if (chuckData.Count > 0)
+            if (chunckData.Count > 0)
             {
-                SyncResult chunkSyncResult = await SyncChunckAsync(storeId, chuckData);
+                SyncResult chunkSyncResult = await SyncChunckAsync(storeId, chunckData);
                 syncResult += chunkSyncResult;
             }
 
