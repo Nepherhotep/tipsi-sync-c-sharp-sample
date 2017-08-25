@@ -59,12 +59,12 @@ namespace TipsiSyncCSharpClient
         private const string SyncClearRoutePattern = "api/rest/{0}/store/{1}/ext/sync_clear";
                 
         /// <summary>
-        /// The barcode route pattern.
+        /// The product route pattern.
         /// {0} - is version.
         /// {1} - is store id.
         /// {2} - is external_id.
         /// </summary>
-        private const string BarcodeRoutePattern = "api/rest/{0}/store/{1}/ext/{2}";
+        private const string ProductRoutePattern = "api/rest/{0}/store/{1}/ext/{2}";
 
         /// <summary>
         /// The count of items per chunk.
@@ -228,14 +228,14 @@ namespace TipsiSyncCSharpClient
         /// <param name="externalId">The external ID.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The <see cref="Task"/>.</returns>
-        public async Task<JObject> BarcodeMatchAsync(string storeId, string externalId, Dictionary<string, string> parameters)
+        public async Task<JObject> ProductMatchAsync(string storeId, string externalId, Dictionary<string, string> parameters)
         {
             string requestUri = parameters != null && parameters.Count > 0
                 ? string.Format(
                     "{0}?{1}",
-                    string.Format(BarcodeRoutePattern, _version, storeId, externalId),
+                    string.Format(ProductRoutePattern, _version, storeId, externalId),
                     parameters.ToGetParameters())
-                : string.Format(BarcodeRoutePattern, _version, storeId, externalId);
+                : string.Format(ProductRoutePattern, _version, storeId, externalId);
 
             HttpResponseMessage response = await _httpClient.GetAsync(requestUri);
             string responceContent = await CheckResopnse(response);

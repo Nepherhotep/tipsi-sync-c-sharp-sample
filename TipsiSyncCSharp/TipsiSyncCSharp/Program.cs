@@ -32,7 +32,6 @@ namespace TipsiSyncCSharp
             string login = "USERNAME";
             string password = "PASSWORD";
             string apiVersion = "v001";
-            string externalId = "EXTERNAL_ID";
             string storeID = "STORE_ID";
             string baseAddress = "https://integration-test.gettipsi.com";
 
@@ -41,7 +40,7 @@ namespace TipsiSyncCSharp
                                                                 new Dictionary<string, object>
                                                                     {
                                                                         { TipsiClient.ExternalId, 229445 },
-                                                                        { "bottle_size", 750 },
+                                                                        { "unit_size", "750ML" },
                                                                         { "price", 34.4 },
                                                                         { "in_stock", 12 },
                                                                         { "barcodes", new [] {12332323232323} }
@@ -49,7 +48,7 @@ namespace TipsiSyncCSharp
                                                                 new Dictionary<string, object>
                                                                     {
                                                                         { TipsiClient.ExternalId, 227985 },
-                                                                        { "bottle_size", 750 },
+                                                                        { "unit_size", "750ML" },
                                                                         { "price", 34.4 },
                                                                         { "in_stock", 12 },
                                                                         { "barcodes", new [] {1233232323232323} }
@@ -68,9 +67,11 @@ namespace TipsiSyncCSharp
             syncResult = tipsiClient.SyncClearAsync(storeID, syncData).Result;
             PrintSyncResult(syncResult);
 
-            // Get Product By Barcode
+            string externalId = "EXTERNAL_ID";
+
+            // Get Product By externalId
             JObject jObject =
-                tipsiClient.BarcodeMatchAsync(
+                tipsiClient.ProductMatchAsync(
                     storeID,
                     externalId,
                     new Dictionary<string, string>
